@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timshail</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .conversation-area {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+      }
+
+      .prompt-area {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .response-area {
+        margin-top: 10px;
+      }
+
+      .form-control {
+        width: calc(100% - 90px);
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .btn-primary {
+        display: inline-block;
+        width: 80px;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Timshail ChatBot</h1>
+      <div id="conversationContainer">
+        <!-- Conversation areas will be dynamically added here -->
+      </div>
+      <input
+        type="text"
+        id="promptInput"
+        placeholder="Type your message here..."
+        class="form-control"
+      />
+      <button type="button" class="btn-primary" id="sendBtn">Send</button>
+    </div>
+
+    <script>
+      document
+        .getElementById("sendBtn")
+        .addEventListener("click", async function () {
+          const prompt = document.getElementById("promptInput").value.trim();
+          if (prompt === "") return; // Ignore empty prompts
+
+          const conversationContainer = document.getElementById(
+            "conversationContainer"
+          );
+
+          // Create new conversation area
+          const conversationArea = document.createElement("div");
+          conversationArea.classList.add("conversation-area");
+
+          // Add user prompt
+          const userPrompt = document.createElement("div");
+          userPrompt.classList.add("prompt-area");
+          userPrompt.textContent = "You: " + prompt;
+          conversationArea.appendChild(userPrompt);
+
+          conversationContainer.appendChild(conversationArea);
+
+          // Scroll to the bottom of conversation container
+          conversationContainer.scrollTop = conversationContainer.scrollHeight;
+
+          // Clear prompt input
+          document.getElementById("promptInput").value = "";
+
+          // Send prompt and update response
+          const result = await generateResponse(prompt);
+
+          // Add chatbot response
+          const chatbotResponse = document.createElement("div");
+          chatbotResponse.classList.add("response-area");
+          chatbotResponse.textContent = "Chatbot: " + result;
+          conversationArea.appendChild(chatbotResponse);
+        });
+
+      async function generateResponse(prompt) {
+        // Use Google Generative AI API to generate response
+        const response = await fetch("/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt }),
+        });
+        const result = await response.json();
+        return result.text;
+      }
+    </script>
+  </body>
+</html>
