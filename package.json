@@ -1,20 +1,6 @@
 {
-  "name": "your-app-name",
-  "version": "1.0.0",
-  "description": "Your application description",
-  "main": "server.js", // Assuming your server file is named server.js
-  "scripts": {
-    "start": "node server.js", // Run the server without nodemon
-    "dev": "nodemon server.js" // Run the server with nodemon for development
-  },
   "dependencies": {
-    "express": "^4.17.1", // Assuming you're using Express for your server
-    "cors": "^2.8.5" // Assuming you're using CORS middleware
-     "@google/generative-ai": "^0.5.0",
-    "express": "^4.19.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15" // Nodemon for cyclic running of your server file during development
+    "@google/generative-ai": "*",
+    "express": "^4.17.1"
   }
 }
-
